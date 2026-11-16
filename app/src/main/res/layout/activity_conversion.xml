@@ -5,195 +5,180 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF0F6"
+    android:background="@drawable/bg_degradado"
     android:fillViewport="true"
     tools:context=".ConversionActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp">
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
 
         <TextView
             android:id="@+id/tvTitulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="8dp"
             android:text="✿ Conversor ✿"
             android:textColor="#C2185B"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="26sp"
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvEtiquetaValor"
-            android:layout_width="0dp"
+            android:id="@+id/tvSubtitulo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="28dp"
-            android:text="♡ Valor que quieres convertir"
+            android:layout_marginTop="4dp"
             android:textColor="#7B5E7B"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTitulo" />
+            android:textSize="15sp" />
 
-        <EditText
-            android:id="@+id/etValor"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="28dp"
-            android:background="@drawable/bg_campo"
-            android:hint="Por ejemplo, 5"
-            android:inputType="numberDecimal|numberSigned"
-            android:paddingStart="18dp"
-            android:paddingEnd="18dp"
-            android:textColor="#7B3F61"
-            android:textColorHint="#C9A9BE"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvEtiquetaValor" />
-
-        <TextView
-            android:id="@+id/tvEtiquetaOrigen"
-            android:layout_width="0dp"
+        <!-- Tarjeta con el formulario -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="28dp"
-            android:text="✧ De"
-            android:textColor="#7B5E7B"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etValor" />
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="28dp"
+            app:cardElevation="6dp"
+            app:strokeColor="#F8BBD0"
+            app:strokeWidth="2dp">
 
-        <Spinner
-            android:id="@+id/spOrigen"
-            android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="28dp"
-            android:background="@drawable/bg_spinner"
-            android:contentDescription="Unidad de origen"
-            android:paddingStart="10dp"
-            android:popupBackground="#FFF8FB"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvEtiquetaOrigen" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="♡ Valor que quieres convertir"
+                    android:textColor="#7B5E7B"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etValor"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_campo"
+                    android:hint="Por ejemplo, 5"
+                    android:importantForAutofill="no"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:paddingStart="18dp"
+                    android:paddingEnd="18dp"
+                    android:textColor="#7B3F61"
+                    android:textColorHint="#C9A9BE"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="✧ De"
+                    android:textColor="#7B5E7B"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spOrigen"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_spinner"
+                    android:contentDescription="Unidad de origen"
+                    android:paddingStart="10dp"
+                    android:popupBackground="#FFF8FB" />
+
+                <!-- Botón para intercambiar las unidades -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnIntercambiar"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="4dp"
+                    android:text="⇅ Intercambiar"
+                    android:textColor="#9575CD"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✧ A"
+                    android:textColor="#7B5E7B"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spDestino"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_spinner"
+                    android:contentDescription="Unidad de destino"
+                    android:paddingStart="10dp"
+                    android:popupBackground="#FFF8FB" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnConvertir"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:layout_marginTop="22dp"
+                    android:text="Convertir ♡"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="#EC407A"
+                    app:cornerRadius="29dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Tarjeta del resultado -->
         <TextView
-            android:id="@+id/tvEtiquetaDestino"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="28dp"
-            android:text="✧ A"
-            android:textColor="#7B5E7B"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spOrigen" />
-
-        <Spinner
-            android:id="@+id/spDestino"
-            android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="28dp"
-            android:background="@drawable/bg_spinner"
-            android:contentDescription="Unidad de destino"
-            android:paddingStart="10dp"
-            android:popupBackground="#FFF8FB"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvEtiquetaDestino" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnConvertir"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="28dp"
-            android:text="Convertir ♡"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:backgroundTint="#F48FB1"
-            app:cornerRadius="28dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spDestino" />
-
-        <TextView
-            android:id="@+id/tvEtiquetaResultado"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="28dp"
             android:text="★ Resultado"
             android:textColor="#7B5E7B"
             android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnConvertir" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvResultado"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="28dp"
             android:background="@drawable/bg_resultado"
             android:gravity="center"
-            android:minHeight="72dp"
-            android:padding="12dp"
+            android:minHeight="80dp"
+            android:padding="16dp"
             android:text="Aquí aparecerá la conversión ✨"
             android:textColor="#5E35B1"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvEtiquetaResultado" />
+            android:textSize="19sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnVolver"
             style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="28dp"
+            android:layout_marginTop="18dp"
             android:text="← Elegir otra categoría"
             android:textColor="#C2185B"
             app:cornerRadius="26dp"
             app:strokeColor="#F48FB1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvResultado" />
+            app:strokeWidth="2dp" />
 
         <ImageView
             android:id="@+id/ivMascota"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_marginTop="16dp"
             android:contentDescription="Mascota del conversor"
             android:scaleType="fitCenter"
-            android:src="@drawable/pngwing"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnVolver" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:src="@drawable/pngwing" />
+    </LinearLayout>
 </ScrollView>
