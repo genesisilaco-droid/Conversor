@@ -1,5 +1,8 @@
 package com.example.app_conversion;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -23,6 +26,9 @@ import java.text.DecimalFormat;
  * Segunda Activity: convierte valores dentro de la categoría elegida en MainActivity.
  */
 public class ConversionActivity extends AppCompatActivity {
+
+    private static final int COLOR_ERROR = Color.parseColor("#C2185B");
+    private static final int COLOR_OK = Color.parseColor("#7E57C2");
 
     private Category category;
     private EditText etValor;
@@ -51,24 +57,28 @@ public class ConversionActivity extends AppCompatActivity {
 
         // 2. Enlazar las vistas
         TextView tvTitulo = findViewById(R.id.tvTitulo);
+        TextView tvSubtitulo = findViewById(R.id.tvSubtitulo);
         etValor = findViewById(R.id.etValor);
         spOrigen = findViewById(R.id.spOrigen);
         spDestino = findViewById(R.id.spDestino);
         tvResultado = findViewById(R.id.tvResultado);
         Button btnConvertir = findViewById(R.id.btnConvertir);
+        Button btnIntercambiar = findViewById(R.id.btnIntercambiar);
         Button btnVolver = findViewById(R.id.btnVolver);
 
-        tvTitulo.setText("✿ " + category.label + " ✿");
+        tvTitulo.setText(category.emoji + " " + category.label);
+        tvSubtitulo.setText("Convierte entre " + category.units.length + " unidades ♡");
 
         // 3. Rellenar los Spinner con las unidades de ESA categoría
         ArrayAdapter<Unit> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, category.units);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.layout.item_spinner, category.units);
+        adapter.setDropDownViewResource(R.layout.item_spinner_dropdown);
         spOrigen.setAdapter(adapter);
         spDestino.setAdapter(adapter);
         spDestino.setSelection(1);
 
         btnConvertir.setOnClickListener(v -> convertir());
+        btnIntercambiar.setOnClickListener(v -> intercambiar());
         btnVolver.setOnClickListener(v -> finish()); // vuelve a la primera Activity
     }
 
@@ -77,7 +87,7 @@ public class ConversionActivity extends AppCompatActivity {
         String texto = etValor.getText().toString().trim().replace(',', '.');
 
         if (texto.isEmpty()) {
-            mensaje("Escribe un valor para convertir");
+            error("Escribe un valor para convertir");
             return;
         }
 
@@ -85,7 +95,7 @@ public class ConversionActivity extends AppCompatActivity {
         try {
             valor = Double.parseDouble(texto);
         } catch (NumberFormatException e) {
-            mensaje("El valor no es un número válido");
+            error("El valor no es un número válido");
             return;
         }
 
@@ -93,23 +103,57 @@ public class ConversionActivity extends AppCompatActivity {
         int destino = spDestino.getSelectedItemPosition();
 
         if (origen == destino) {
-            mensaje("Elige dos unidades distintas");
+            error("Elige dos unidades distintas");
             return;
         }
         if (!category.isValid(valor, origen)) {
-            mensaje("Ese valor no es posible en " + category.label.toLowerCase());
+            error("Ese valor no es posible en " + category.label.toLowerCase());
             return;
         }
 
         double resultado = category.convert(valor, origen, destino);
+        String textoResultado = formato.format(resultado) + " " + category.units[destino];
         tvResultado.setText(formato.format(valor) + " " + category.units[origen]
-                + "\n= " + formato.format(resultado) + " " + category.units[destino]);
-        mensaje("¡Conversión hecha! ♡");
+                + "\n= " + textoResultado);
+
+        // Animación del resultado
+        tvResultado.setScaleX(0.9f);
+        tvResultado.setScaleY(0.9f);
+        tvResultado.animate().scaleX(1f).scaleY(1f).setDuration(200).start();
+
+        // Snackbar de éxito con acción para copiar el resultado
+        Snackbar snackbar = crearSnackbar("¡Conversión hecha! ♡", COLOR_OK);
+        snackbar.setAction("Copiar", v -> copiar(textoResultado));
+        snackbar.setActionTextColor(Color.parseColor("#FFE4EF"));
+        snackbar.show();
+    }
+
+    /** Intercambia la unidad de origen y la de destino. */
+    private void intercambiar() {
+        int origen = spOrigen.getSelectedItemPosition();
+        spOrigen.setSelection(spDestino.getSelectedItemPosition());
+        spDestino.setSelection(origen);
+        if (!etValor.getText().toString().trim().isEmpty()) {
+            convertir();
+        }
+    }
+
+    private void copiar(String texto) {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        clipboard.setPrimaryClip(ClipData.newPlainText("Resultado", texto));
+        crearSnackbar("Resultado copiado ✨", COLOR_OK).show();
     }
 
     /** Todos los mensajes emergentes con Snackbar (nunca Toast). */
-    private void mensaje(String texto) {
-        Snackbar.make(findViewById(R.id.main), texto, Snackbar.LENGTH_SHORT).show();
+    private void error(String texto) {
+        crearSnackbar(texto, COLOR_ERROR).show();
+    }
+
+    private Snackbar crearSnackbar(String texto, int color) {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.main), texto, Snackbar.LENGTH_LONG);
+        snackbar.setBackgroundTint(color);
+        snackbar.setTextColor(Color.WHITE);
+        return snackbar;
     }
 
     private void ocultarTeclado() {
